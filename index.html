@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krzyżówka</title>
+    <link rel="stylesheet" href="style.css?v=3">
+</head>
+<body>
+    <div class="container">
+        <h1>Krzyżówka</h1>
+        
+        <div id="crossword-board" class="board"></div>
+        
+        <div class="clues-container">
+            <div class="clues-column">
+                <h3>Hasła poziomo</h3>
+                <ul id="clues-across"></ul>
+            </div>
+            <div class="clues-column">
+                <h3>Hasła pionowo</h3>
+                <ul id="clues-down"></ul>
+            </div>
+        </div>
+        
+        <div class="button-group">
+            <button id="verify-btn">Sprawdź odpowiedzi</button>
+            <button id="btn-normal" class="secondary-btn">Losuj (Normalny)</button>
+            <button id="btn-hard" class="secondary-btn" style="background-color: #55819b;">Losuj (Trudny)</button>
+        </div>
+
+        <div id="success-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <button id="close-modal-btn" class="modal-close">&times;</button>
+            
+            <div class="modal-body">
+                <span class="modal-icon">🎉</span>
+                <h2>Gratulacje!</h2>
+                <p>Krzyżówka została rozwiązana bezbłędnie!</p>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,264 @@
+:root {
+    --cell-size: 40px;
+    --border-color: #333;
+    --bg-color: #bccee2;
+    --highlight-color: #b3d4ff;
+    --correct-color: #c8e6c9;
+    --incorrect-color: #ffcdd2;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-image: url('waves.gif');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: top center;
+    background-color: var(--bg-color); 
+
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    margin: 0;
+}
+
+
+.container {
+    width: 90%;
+    max-width: 65%; 
+    
+    background: rgba(190, 233, 233, 0.5); 
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.board {
+    display: grid;
+    gap: 0; 
+    margin: 30px auto;
+    width: max-content;
+    max-width: 100%;
+    overflow-x: auto;
+    
+    background-color: transparent; 
+    border: none;
+    
+    padding: 1px 1px 16px 1px; 
+}
+
+/* ramki ktore sprawiaja ze chve sie zabic wsns co */
+.cell {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    
+    border: 1px solid var(--border-color);
+    
+    margin-top: -1px;
+    margin-left: -1px;
+    
+    z-index: 1; 
+    
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.cell input {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    border: none;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    background: transparent;
+    outline: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.cell input:focus {
+    background-color: var(--highlight-color);
+}
+
+.cell-number {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    font-size: 11px;
+    color: #555;
+    pointer-events: none;
+}
+
+.cell.correct input {
+    background-color: var(--correct-color);
+    color: #2e7d32;
+}
+
+.cell.incorrect input {
+    background-color: var(--incorrect-color);
+    color: #c62828;
+}
+
+.clues-container {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 30px;
+}
+
+.clues-column {
+    flex: 1;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
+    line-height: 1.5;
+    font-size: 15px;
+}
+
+li strong {
+    margin-right: 5px;
+}
+
+button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.button-group {
+    display: flex;
+    gap: 15px;
+}
+
+.button-group button {
+    flex: 1;
+}
+
+.secondary-btn {
+    background-color: #6c757d; 
+}
+
+.secondary-btn:hover {
+    background-color: #5a6268;
+}
+
+.cell.highlighted-word {
+    background-color: #fff3cd; 
+    transition: background-color 0.2s ease;
+}
+
+.clues-container li {
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.clues-container li:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Wysoki z-index, żeby okno było nad całą krzyżówką */
+}
+
+/* Właściwe okienko na środku */
+.modal-content {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    position: relative;
+    max-width: 450px;
+    width: 90%;
+    text-align: center;
+    animation: popupAppear 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Przycisk X w prawym górnym rogu */
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+    padding: 0;
+    width: auto; 
+}
+
+.modal-close:hover {
+    color: #333;
+}
+
+/* Wygląd wnętrza okienka */
+.modal-icon {
+    font-size: 60px;
+    display: block;
+    margin-bottom: 15px;
+}
+
+.modal-body h2 {
+    margin: 0 0 10px 0;
+    color: #155724;
+    font-size: 28px;
+}
+
+.modal-body p {
+    margin: 0;
+    font-size: 16px;
+    color: #555;
+}
+
+/* Efekt płynnego wyskakiwania okienka */
+@keyframes popupAppear {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
