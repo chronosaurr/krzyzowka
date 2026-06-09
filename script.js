@@ -1,7 +1,6 @@
 const API_BASE_URL = 'http://127.0.0.1:8000/api';
 
-
-const boardElement = document.getElementById('crossword-board');
+const boardElement = document.getElementById('board');
 const cluesAcrossElement = document.getElementById('clues-across');
 const cluesDownElement = document.getElementById('clues-down');
 const verifyBtn = document.getElementById('verify-btn');
@@ -10,26 +9,10 @@ const btnHard = document.getElementById('btn-hard');
 const successModal = document.getElementById('success-modal');
 const closeModalBtn = document.getElementById('close-modal-btn');
 
-
 let layoutData = [];
 let currentDirection = 'r';
 const cellMap = new Map(); 
 
-
-async function init() {
-    try {
-        const response = await fetch(`${API_BASE_URL}/crossword`);
-        if (!response.ok) throw new Error('Błąd podczas pobierania krzyżówki');
-        
-        const data = await response.json();
-        layoutData = data.layout;
-        
-        renderCrossword();
-    } catch (error) {
-        console.error(error);
-        boardElement.innerHTML = `<p style="color: red;">Nie udało się załadować krzyżówki. Upewnij się, że serwer jest włączony.</p>`;
-    }
-}
 function renderCrossword() {
     let maxRow = 0;
     let maxCol = 0;
@@ -110,7 +93,7 @@ function renderCrossword() {
                 input.dataset.row = r;
                 input.dataset.col = c;
                 
-                // auromatyczne przechodzenie do następnej kratki po wpisaniu litery
+                // automatyczne przechodzenie do następnej kratki po wpisaniu litery
                 input.addEventListener('input', function() {
                     this.value = this.value.toUpperCase();
 
@@ -270,7 +253,6 @@ successModal.addEventListener('click', (e) => {
     }
 });
 
-
 async function loadCrossword(endpoint) {
     try {
         const response = await fetch(`${API_BASE_URL}${endpoint}`);
@@ -285,7 +267,6 @@ async function loadCrossword(endpoint) {
         cluesDownElement.innerHTML = '';
         cellMap.clear();
         successModal.style.display = 'none';
-
 
         // 2. Rysowanie nowej
         renderCrossword();
@@ -309,3 +290,4 @@ btnHard.addEventListener('click', () => {
 });
 
 init();
+
