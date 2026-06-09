@@ -5,6 +5,8 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 
 
 app = FastAPI()
@@ -186,3 +188,12 @@ def verify_answers(request: VerifyRequest):
             })
             
     return {"results": results}
+
+
+# Mount static files
+app.mount("/", StaticFiles(directory=os.path.dirname(__file__), html=True), name="static")
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("main:app", host="0.0.0.0", port=30330, reload=True)

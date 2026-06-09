@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://127.0.0.1:8000/api';
+const API_BASE_URL = 'http://srv32.mikr.us:30330/api';
 
 const boardElement = document.getElementById('board');
 const cluesAcrossElement = document.getElementById('clues-across');
