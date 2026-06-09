@@ -8,10 +8,34 @@ const btnNormal = document.getElementById('btn-normal');
 const btnHard = document.getElementById('btn-hard');
 const successModal = document.getElementById('success-modal');
 const closeModalBtn = document.getElementById('close-modal-btn');
-
+const successText = document.getElementById('success-text');
+const timerDisplay = document.getElementById('timer-display');
+let timerInterval;
+let secondsElapsed = 0;
 let layoutData = [];
 let currentDirection = 'r';
 const cellMap = new Map(); 
+
+// --- LOGIKA STOPERA ---
+function startTimer() {
+    clearInterval(timerInterval);
+    secondsElapsed = 0;
+    updateTimerDisplay();
+    timerInterval = setInterval(() => {
+        secondsElapsed++;
+        updateTimerDisplay();
+    }, 1000);
+}
+
+function stopTimer() {
+    clearInterval(timerInterval);
+}
+
+function updateTimerDisplay() {
+    const m = String(Math.floor(secondsElapsed / 60)).padStart(2, '0');
+    const s = String(secondsElapsed % 60).padStart(2, '0');
+    timerDisplay.textContent = `${m}:${s}`;
+}
 
 function renderCrossword() {
     let maxRow = 0;
@@ -19,7 +43,6 @@ function renderCrossword() {
     let wordCounter = 1;
     const startPositions = {};
 
-    // 1. Obliczamy wymiary planszy i przypisujemy numery słowom
     layoutData.forEach(word => {
         const key = `${word.row}-${word.col}`;
         if (!startPositions[key]) {
@@ -34,16 +57,13 @@ function renderCrossword() {
         if (endCol > maxCol) maxCol = endCol;
     });
 
-    // 2. Konfiguracja CSS Grid
     boardElement.style.gridTemplateRows = `repeat(${maxRow + 1}, var(--cell-size))`;
     boardElement.style.gridTemplateColumns = `repeat(${maxCol + 1}, var(--cell-size))`;
 
-    // 3. Renderowanie kratek (cells) i podpowiedzi (clues)
     layoutData.forEach(word => {
         const clueLi = document.createElement('li');
         clueLi.innerHTML = `<strong>${word.displayNumber}.</strong> ${word.clue}`;
         
-        // podswietlanie słowa na planszy po najechaniu na pytanie
         clueLi.addEventListener('mouseenter', () => {
             for (let i = 0; i < word.length; i++) {
                 const r = word.row + (word.direction === 'd' ? i : 0);
@@ -53,7 +73,6 @@ function renderCrossword() {
             }
         });
 
-        // Usuwanie podświetlenia gdy kursor zjeżdża z pytania
         clueLi.addEventListener('mouseleave', () => {
             for (let i = 0; i < word.length; i++) {
                 const r = word.row + (word.direction === 'd' ? i : 0);
@@ -63,7 +82,6 @@ function renderCrossword() {
             }
         });
 
-        // Kliknięcie w pytanie ustawia odpowiedni kierunek i przeniesienie kursora na pierwszą kratkę
         clueLi.addEventListener('click', () => {
             currentDirection = word.direction; 
             const firstCell = cellMap.get(`${word.row}-${word.col}`);
@@ -76,7 +94,6 @@ function renderCrossword() {
             cluesDownElement.appendChild(clueLi);
         }
 
-        // Rysowanie kratek
         for (let i = 0; i < word.length; i++) {
             const r = word.row + (word.direction === 'd' ? i : 0);
             const c = word.col + (word.direction === 'r' ? i : 0);
@@ -93,7 +110,6 @@ function renderCrossword() {
                 input.dataset.row = r;
                 input.dataset.col = c;
                 
-                // automatyczne przechodzenie do następnej kratki po wpisaniu litery
                 input.addEventListener('input', function() {
                     this.value = this.value.toUpperCase();
 
@@ -118,7 +134,6 @@ function renderCrossword() {
                     }
                 });
 
-                // cofanie się do poprzedniej kratki po naciśnięciu backspace if obecna kratka jest pusta
                 input.addEventListener('keydown', function(e) {
                     if (e.key === 'Backspace' && this.value === '') {
                         let prevR = r - (currentDirection === 'd' ? 1 : 0);
@@ -137,7 +152,6 @@ function renderCrossword() {
                 cellMap.set(key, { cell: cellDiv, input: input });
             }
 
-            // Dodawanie numerka dla początkowych kratek
             if (r === word.row && c === word.col) {
                 const existingCell = cellMap.get(key).cell;
                 if (!existingCell.querySelector('.cell-number')) {
@@ -151,9 +165,11 @@ function renderCrossword() {
     });
 
     setupKeyboardNavigation();
+
+    // (re)start stopera po wyrenderowaniu
+    startTimer();
 }
 
-// 4. Obsługa strzałek na klawiaturze 
 function setupKeyboardNavigation() {
     boardElement.addEventListener('keydown', (e) => {
         if (e.target.tagName !== 'INPUT') return;
@@ -163,7 +179,6 @@ function setupKeyboardNavigation() {
         let nextR = r;
         let nextC = c;
 
-        // Aktualizujemy preferowany kierunek na podstawie użytych strzałek
         if (e.key === 'ArrowRight') { nextC++; currentDirection = 'r'; }
         else if (e.key === 'ArrowLeft') { nextC--; currentDirection = 'r'; }
         else if (e.key === 'ArrowDown') { nextR++; currentDirection = 'd'; }
@@ -178,7 +193,6 @@ function setupKeyboardNavigation() {
     });
 }
 
-// 5. Zbieranie haseł i wysyłanie ich do weryfikacji na backendzie
 verifyBtn.addEventListener('click', async () => {
     const answersPayload = [];
 
@@ -199,9 +213,7 @@ verifyBtn.addEventListener('click', async () => {
     try {
         const response = await fetch(`${API_BASE_URL}/verify`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ answers: answersPayload })
         });
 
@@ -230,9 +242,9 @@ verifyBtn.addEventListener('click', async () => {
         const isAllCorrect = data.results.every(result => result.is_correct);
         
         if (isAllCorrect && data.results.length > 0) {
+            stopTimer(); // Wyłączamy stoper po wygranej
+            successText.innerHTML = `Rozwiązałeś całą krzyżówkę bezbłędnie w czasie <strong>${timerDisplay.textContent}</strong>!`;
             successModal.style.display = 'flex'; 
-        } else {
-            successModal.style.display = 'none';
         }
 
     } catch (error) {
@@ -241,12 +253,10 @@ verifyBtn.addEventListener('click', async () => {
     }
 });
 
-// Obsługa zamknięcia okienka krzyżykiem
 closeModalBtn.addEventListener('click', () => {
     successModal.style.display = 'none';
 });
 
-// ciemne tlo 
 successModal.addEventListener('click', (e) => {
     if (e.target === successModal) {
         successModal.style.display = 'none';
@@ -261,14 +271,12 @@ async function loadCrossword(endpoint) {
         const data = await response.json();
         layoutData = data.layout;
         
-        // 1. Czyszczenie starej planszy i list
         boardElement.innerHTML = '';
         cluesAcrossElement.innerHTML = '';
         cluesDownElement.innerHTML = '';
         cellMap.clear();
         successModal.style.display = 'none';
 
-        // 2. Rysowanie nowej
         renderCrossword();
     } catch (error) {
         console.error(error);
@@ -276,7 +284,6 @@ async function loadCrossword(endpoint) {
     }
 }
 
-// Inicjalizacja przy starcie strony
 function init() {
     loadCrossword('/crossword');
 }
@@ -290,4 +297,3 @@ btnHard.addEventListener('click', () => {
 });
 
 init();
-

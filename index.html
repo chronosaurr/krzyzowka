@@ -8,7 +8,6 @@
 </head>
 <body>
     <div class="main-wrapper">
-        
         <div class="container">
             
             <div class="dropdown-container">
@@ -33,12 +32,16 @@
                 </div>
             </div>
 
+            <div class="timer-container">
+                <span class="timer-label">CZAS GRY:</span>
+                <span id="timer-display">00:00</span>
+            </div>
+
             <div class="board" id="board"></div>
 
             <div class="verify-button-wrapper">
                 <button id="verify-btn" class="btn-verify">Sprawdź odpowiedzi</button>
             </div>
-            
         </div>
     </div>
 
@@ -48,7 +51,7 @@
             <div class="modal-body">
                 <span class="modal-icon">🎉</span>
                 <h2>Gratulacje!</h2>
-                <p>Rozwiązałeś całą krzyżówkę bezbłędnie!</p>
+                <p id="success-text">Rozwiązałeś całą krzyżówkę bezbłędnie!</p>
             </div>
         </div>
     </div>
