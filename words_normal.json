@@ -251,5 +251,6 @@
   {"id": 250, "word": "ZAKONNICA", "clue": "Kobieta należąca do zakonu religijnego, prowadząca życie duchowe."},
   {"id": 251, "word": "MEWA", "clue": "Ptak morski o białym upierzeniu i charakterystycznym krzyku, któremu zdarza się porywać małe pieski."},
   {"id": 252, "word": "MISSPIGGY", "clue": "Żona Kermita, znana z programu o Muppetach."},
-  ("id": 253 ,"word": "LANGUSTA", "clue": "Skorupiak morski, wbrew obiegowej opinii żywi się tylko owocami morza, chodź gdyby mogła, jadłaby dżem"}
+  {"id": 253 ,"word": "LANGUSTA", "clue": "Skorupiak morski, wbrew obiegowej opinii żywi się tylko owocami morza, chodź gdyby mogła, jadłaby dżem"},
+  {"id": 254, "word": "REWOLWER", "clue": "Wyrewolwerowany."}
 ]
