@@ -95,7 +95,7 @@
   {"id": 94, "word": "TLOK", "clue": "Wielki ścisk w autobusie lub element w cylindrze silnika."},
   {"id": 95, "word": "CKLIWY", "clue": "Przesadnie sentymentalny i łzawy."},
   {"id": 96, "word": "CZASOMIERZ", "clue": "Stoper lub zegarek."},
-  {"id": 97, "word": "CZERSTWY", "clue": "O chlebie, który stracił swoją Nświeżość."},
+  {"id": 97, "word": "CZERSTWY", "clue": "O chlebie, który stracił swoją świeżość."},
   {"id": 98, "word": "DOLA", "clue": "Przeznaczenie, los lub udział w zysku."},
   {"id": 99, "word": "DOROZKARZ", "clue": "Człowiek powożący konnym zaprzęgiem z pasażerami."},
   {"id": 100, "word": "ABORDAZ", "clue": "Historyczny manewr walki morskiej polegający na przybiciu do wrogiego okrętu i wejściu jego załogi na pokład w celu stoczenia walki wręcz."},
@@ -250,5 +250,7 @@
   {"id": 249, "word": "ZAKLECIE", "clue": "Słowa wypowiedziane w magicznym rytuale mające wywołać określony efekt."},
   {"id": 250, "word": "ZAKONNICA", "clue": "Kobieta należąca do zakonu religijnego, prowadząca życie duchowe."},
   {"id": 251, "word": "MEWA", "clue": "Ptak morski o białym upierzeniu i charakterystycznym krzyku, któremu zdarza się porywać małe pieski."},
-  {"id": 252, "word": "MISSPIGGY", "clue": "Żona Kermita, znana z programu o Muppetach."}
+  {"id": 252, "word": "MISSPIGGY", "clue": "Żona Kermita, znana z programu o Muppetach."},
+  {"id": 253 ,"word": "LANGUSTA", "clue": "Skorupiak morski, wbrew obiegowej opinii żywi się tylko owocami morza, chodź gdyby mogła, jadłaby dżem"},
+  {"id": 254, "word": "REWOLWER", "clue": "Wyrewolwerowany."}
 ]
